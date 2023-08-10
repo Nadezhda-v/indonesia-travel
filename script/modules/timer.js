@@ -1,23 +1,16 @@
-export const startTimer = () => {
-  const timerHero = document.querySelector('.timer');
-  const heroText = document.querySelector('.hero__text');
-
-  const getDateDeadline = () => {
-    timerHero.setAttribute('data-timer-deadline', '2023/08/15');
-    const deadline = timerHero.getAttribute('data-timer-deadline');
-
-    return deadline;
-  };
-
-  const deadline = getDateDeadline();
+export const startTimer = (timerBlock, deadline) => {
+  const timerId = timerBlock.getAttribute('data-timer-id');
+  const associatedTimer = document.querySelector(
+    `[data-associated-timer="${timerId}"]
+  `);
 
   const timer = (deadline) => {
-    const countDays = document.querySelector('.timer__count_days');
-    const unitsDays = document.querySelector('.timer__units_days');
-    const countHours = document.querySelector('.timer__count_hours');
-    const unitsHours = document.querySelector('.timer__units_hours');
-    const countMinutes = document.querySelector('.timer__count_minutes');
-    const unitsMinutes = document.querySelector('.timer__units_minutes');
+    const countDays = timerBlock.querySelector('.timer__count_days');
+    const unitsDays = timerBlock.querySelector('.timer__units_days');
+    const countHours = timerBlock.querySelector('.timer__count_hours');
+    const unitsHours = timerBlock.querySelector('.timer__units_hours');
+    const countMinutes = timerBlock.querySelector('.timer__count_minutes');
+    const unitsMinutes = timerBlock.querySelector('.timer__units_minutes');
 
     const getTimeRemaining = () => {
       const dateStop = new Date(deadline).getTime();
@@ -90,14 +83,13 @@ export const startTimer = () => {
 
       if (timer.temeRemaining <= 0) {
         clearTimeout(intervalId);
-        timerHero.style.display = 'none';
-        heroText.style.display = 'none';
+        timerBlock.style.display = 'none';
+        associatedTimer ? associatedTimer.style.display = 'none' : null;
       }
     };
 
     start();
   };
+
   timer(deadline);
 };
-
-startTimer();
