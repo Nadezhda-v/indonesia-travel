@@ -46,14 +46,13 @@ const createTimerBlock = (timer) => {
   return timer;
 };
 
-const timerPlugin = (deadlines) => {
+const timerPlugin = () => {
   const timers = document.querySelectorAll('[data-timer-deadline]');
 
-  [...timers].forEach((timer, index) => {
+  [...timers].forEach((timer) => {
     const timerBlock = createTimerBlock(timer);
-    const deadline = deadlines[index];
 
-    startTimer(timerBlock, deadline);
+    startTimer(timerBlock);
   });
 };
 

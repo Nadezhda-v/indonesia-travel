@@ -1,6 +1,6 @@
-export const startTimer = (timerBlock, deadline) => {
+export const startTimer = (timerBlock) => {
   const timerId = timerBlock.getAttribute('data-timer-id');
-  timerBlock.setAttribute('data-timer-deadline', deadline);
+  const deadline = timerBlock.getAttribute('data-timer-deadline');
   const associatedTimer = document.querySelector(
     `[data-associated-timer="${timerId}"]
   `);
