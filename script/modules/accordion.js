@@ -11,17 +11,20 @@ export const accordionControl = () => {
     }
   });
 
+  textWrapper[0].style.height = `${heightWrapper}px`;
+
   buttons.forEach((btn, index) => {
     btn.addEventListener('click', () => {
       items.forEach((item, i) => {
         if (index === i) {
+          console.log(textWrapper[i]);
           const isActive = items[i].classList.contains('travel__item_active');
-          textWrapper[i].style.minHeight = isActive ?
+          textWrapper[i].style.height = isActive ?
               '0' : `${heightWrapper}px`;
           item.classList.toggle('travel__item_active');
         } else {
           item.classList.remove('travel__item_active');
-          textWrapper[i].style.minHeight = '0';
+          textWrapper[i].style.height = '0';
         }
       });
     });
