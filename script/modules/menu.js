@@ -3,13 +3,22 @@ export const menuControl = () => {
   const menu = document.querySelector('.header__menu');
   const list = document.querySelector('.header__list');
 
-  button.addEventListener('click', () => {
-    menu.classList.toggle('header__menu_active');
-  });
-
   const closeMenu = () => {
+    menu.classList.add('header__menu_closing');
+    setTimeout(() => {
+      menu.classList.remove('header__menu_closing');
+    }, 600);
     menu.classList.remove('header__menu_active');
   };
+
+  button.addEventListener('click', () => {
+    if (menu.classList.contains('header__menu_active')) {
+      menu.classList.remove('header__menu_active');
+      closeMenu();
+    } else {
+      menu.classList.add('header__menu_active');
+    }
+  });
 
   document.addEventListener('click', ({target}) => {
     if (!button.contains(target) && !menu.contains(target)) {
