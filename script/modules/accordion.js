@@ -17,7 +17,6 @@ export const accordionControl = () => {
     btn.addEventListener('click', () => {
       items.forEach((item, i) => {
         if (index === i) {
-          console.log(textWrapper[i]);
           const isActive = items[i].classList.contains('travel__item_active');
           textWrapper[i].style.height = isActive ?
               '0' : `${heightWrapper}px`;
