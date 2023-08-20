@@ -10,7 +10,6 @@
   <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
   <link rel="icon" type="image/png" href="img/favicon.png">
   <link rel="stylesheet" href="css/index.css">
-  <link rel="stylesheet" href="css/timer.css">
 
   <script type="module" src="script/index.js"></script>
 
@@ -47,7 +46,7 @@
 
           <p class="hero__text" data-associated-timer="timer-1">Действует скидка 20% на туры от 6&nbsp;человек</p>
 
-          <div class="hero__timer timer" data-timer-deadline="2023/08/15" data-timer-id="timer-1">
+          <div class="hero__timer timer" data-timer-deadline="2023/08/28" data-timer-id="timer-1">
             <!--<p class="timer__title">До конца акции осталось:</p>
             <p class="timer__item timer__item_days">
               <span class="timer__count timer__count_days">2</span>
@@ -249,7 +248,7 @@
           <div class="reservation__inputs">
             <div class="reservation__selects">
               <label class="reservation__select-wrapper reservation__select-wrapper_date">
-                <select name="dates" id="reservation__date" class="reservation__select">
+                <select name="date" id="reservation__date" class="reservation__select">
                   <option value="" class="tour__option">Дата путешествия</option>
                   <option value="4.02 - 18.02" class="tour__option reservation__option">4.02 - 18.02</option>
                   <option value="7.02 - 21.02" class="tour__option reservation__option">7.02 - 21.02</option>
@@ -273,11 +272,11 @@
           <div class="reservation__contacts">
             <div class="reservation__input-wrap">
               <label for="reservation__name" class="reservation__label">ФИО</label>
-              <input required type="text" class="reservation__input reservation__input_name" id="reservation__name" placeholder="Введите ваше ФИО">
+              <input name="fullName" type="text" class="reservation__input reservation__input_name" id="reservation__name" placeholder="Введите ваше ФИО" required>
             </div>
             <div class="reservation__input-wrap">
               <label for="reservation__phone" class="reservation__label">Телефон</label>
-              <input required type="text" class="reservation__input" id="reservation__phone" placeholder="Введите номер телефона">
+              <input name="phone" type="number" class="reservation__input" id="reservation__phone" placeholder="Введите номер телефона" required>
             </div>
           </div>
           <div class="reservation__bottom">
@@ -333,7 +332,7 @@
           <h2 class="footer__title footer__form-title">Есть вопросы по туру?</h2>
           <p class="footer__text">Введите свой Email и мы свяжемся с вами в течении 3 рабочих дней</p>
           <div class="footer__input-wrap">
-            <input required type="text" class="footer__input" placeholder="Введите адрес электронной почты">
+            <input type="text" class="footer__input" name="mail" placeholder="Введите адрес электронной почты" required>
             <button type="submit" class="button footer__button" aria-label="Кнопка отправки данных формы"></button>
           </div>
         </form>
@@ -347,5 +346,29 @@
       </div>
     </div>
   </footer>
+
+  <div class="overlay success__overlay hidden">
+    <div class="modal success__modal" id="successModal">
+      <div class="modal__content">
+        <h2 class="modal__title">Ваша заявка успешно отправлена</h2>
+        <p class="modal__text">Наши менеджеры свяжутся с вами в течении 3-х рабочих дней</p>
+        <button type="button" class="button modal__button modal__button_success" aria-label="Кнопка закрытия окна">
+          <svg xmlns="http://www.w3.org/2000/svg" width="62" height="62" viewBox="0 0 62 62" fill="none">
+            <path d="M23.2618 41.8332L12.4285 30.9999L8.81738 34.611L23.2618 49.0554L54.2142 18.1031L50.6031 14.4919L23.2618 41.8332Z" fill="white"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay error__overlay hidden">
+    <div class="modal error__modal" id="errorModal">
+      <div class="modal__content">
+        <h2 class="modal__title">Упс... Что-то пошло не так</h2>
+        <p class="modal__text">Не удалось отправить заявку. Пожалуйста, повторите отправку еще раз</p>
+        <button type="button" class="button modal__button modal__button_error reservation__button">Забронировать</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
