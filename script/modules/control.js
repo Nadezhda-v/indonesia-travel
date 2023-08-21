@@ -73,6 +73,15 @@ const handleEvent = () => {
       closeMenu();
     }
   });
+
+  document.addEventListener('click', (e) => {
+    const modalButton = e.target.closest('.modal__button');
+
+    if (modalButton) {
+      const overlay = modalButton.closest('.overlay');
+      overlay.classList.add('hidden');
+    }
+  });
 };
 
 export {
