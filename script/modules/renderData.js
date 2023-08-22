@@ -2,7 +2,16 @@ import {
   delOption,
   formatDate,
   formatCountPeople,
+  disableFormElements,
 } from './control.js';
+
+import {
+  showConfirmModal,
+  showSuccessModal,
+  showErrorModal,
+} from './modal.js';
+
+import {fetchRequest} from './request.js';
 
 export const renderData = (data) => {
   const tourForm = document.querySelector('.tour__form');
@@ -69,7 +78,22 @@ export const renderData = (data) => {
     const item = data.find(item => item.date === date);
     const price = item.price * count;
 
-    return price;
+    const formattedPrice = price.toLocaleString('ru-RU', {
+      style: 'currency',
+      currency: 'RUB',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    });
+
+    return formattedPrice;
+  };
+
+  const formatData = (reservationDate, countPeople) => {
+    const price = renderPrice(reservationDate, countPeople);
+    const date = formatDate(reservationDate);
+    const people = formatCountPeople(countPeople);
+
+    return {price, date, people};
   };
 
   tourDate.addEventListener('change', async () => {
@@ -95,16 +119,49 @@ export const renderData = (data) => {
     reservationPrice.textContent = `0 ₽`;
 
     if (reservationDate.value && reservationPeople.value) {
-      const price = renderPrice(reservationDate.value, reservationPeople.value);
-      const date = formatDate(reservationDate.value);
-      const countPeople = formatCountPeople(reservationPeople.value);
+      const data = formatData(reservationDate.value, reservationPeople.value);
 
       reservationInfo.textContent = `
-        ${date}, ${countPeople}
+        ${data.date}, ${data.people}
       `;
-      reservationPrice.textContent = `${price} ₽`;
+      reservationPrice.textContent = `${data.price}`;
       reservationInfo.style.opacity = '1';
     }
   });
-};
 
+  reservationForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = {};
+
+    for (const [name, value] of formData) {
+      data[name] = value;
+    }
+
+    const formattedData = formatData(data.date, data.people);
+    await showConfirmModal(formattedData);
+    const confirmButton = document.querySelector('.modal__button_confirm');
+
+    confirmButton.addEventListener('click', async () => {
+      await fetchRequest('https://jsonplaceholder.typicode.com/posts-1', {
+        method: 'POST',
+        body: data,
+        callback(err, data) {
+          if (err) {
+            console.warn(err, data);
+            showErrorModal();
+          } else {
+            showSuccessModal();
+            reservationForm.reset();
+            reservationInfo.style.opacity = '0';
+            reservationPrice.textContent = `0 ₽`;
+            disableFormElements(reservationForm);
+          }
+        },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    });
+  });
+};

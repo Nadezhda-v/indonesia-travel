@@ -2,9 +2,8 @@ import {timerPlugin} from './modules/timerPlugin.js';
 import {accordionControl} from './modules/accordion.js';
 import {handleEvent} from './modules/control.js';
 import {airplaneControl} from './modules/airplane.js';
-import {loadData} from './modules/dataFetcher.js';
+import {loadData} from './modules/request.js';
 import {renderData} from './modules/renderData.js';
-import {sendForm} from './modules/sendForm.js';
 
 const init = () => {
   timerPlugin();
@@ -18,7 +17,6 @@ const init = () => {
   };
 
   getData();
-  sendForm();
 };
 
 init();

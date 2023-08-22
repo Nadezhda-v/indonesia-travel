@@ -1,0 +1,88 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 980px;
+  min-width: 320px;
+  width: 100%;
+  background: #FFFFFF;
+  border: 1px solid #AFAFAF;
+  border-radius: 30px;
+  padding: 60px;
+}
+
+.modal__title {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.modal__text {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.modal__buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+
+.modal__button {
+  padding: 16px 40px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  background-color: #FCB500;
+  border: 2px solid transparent;
+}
+
+.modal__button_edit {
+  white-space: nowrap;
+  background-color: #fc8900;
+}
+
+.modal__button:hover {
+  background-color: #ffbbaa;
+}
+
+.modal__button:active {
+  transform: translate(2px, 2px);
+}
+
+.modal__button:focus {
+  outline: 1px solid #FCB500;
+  outline-offset: 5px;
+}
+
+@media (max-width: 760px) {
+  .modal__title {
+    font-size: 16px;
+    margin-bottom: 30px;
+  }
+
+  .modal__text {
+    font-size: 14px;
+    margin-bottom: 30px;
+  }
+
+  .modal__button {
+    padding: 14px 30px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal__buttons {
+    flex-direction: column;
+    gap: 20px;
+  }
+}

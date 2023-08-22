@@ -248,7 +248,7 @@
           <div class="reservation__inputs">
             <div class="reservation__selects">
               <label class="reservation__select-wrapper reservation__select-wrapper_date">
-                <select name="date" id="reservation__date" class="reservation__select">
+                <select name="date" id="reservation__date" class="reservation__select" required>
                   <option value="" class="tour__option">Дата путешествия</option>
                   <option value="4.02 - 18.02" class="tour__option reservation__option">4.02 - 18.02</option>
                   <option value="7.02 - 21.02" class="tour__option reservation__option">7.02 - 21.02</option>
@@ -257,7 +257,7 @@
                 </select>
               </label>
               <label class="reservation__select-wrapper reservation__select-wrapper_people">
-                <select name="people" id="reservation__people" class="reservation__select">
+                <select name="people" id="reservation__people" class="reservation__select" required>
                   <option value="" class="tour__option reservation__option">Количество человек</option>
                   <option value="" class="tour__option reservation__option">1</option>
                   <option value="" class="tour__option reservation__option">2</option>
@@ -346,29 +346,5 @@
       </div>
     </div>
   </footer>
-
-  <div class="overlay success__overlay hidden">
-    <div class="modal success__modal" id="successModal">
-      <div class="modal__content">
-        <h2 class="modal__title">Ваша заявка успешно отправлена</h2>
-        <p class="modal__text">Наши менеджеры свяжутся с вами в течении 3-х рабочих дней</p>
-        <button type="button" class="button modal__button modal__button_success" aria-label="Кнопка закрытия окна">
-          <svg xmlns="http://www.w3.org/2000/svg" width="62" height="62" viewBox="0 0 62 62" fill="none">
-            <path d="M23.2618 41.8332L12.4285 30.9999L8.81738 34.611L23.2618 49.0554L54.2142 18.1031L50.6031 14.4919L23.2618 41.8332Z" fill="white"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div class="overlay error__overlay hidden">
-    <div class="modal error__modal" id="errorModal">
-      <div class="modal__content">
-        <h2 class="modal__title">Упс... Что-то пошло не так</h2>
-        <p class="modal__text">Не удалось отправить заявку. Пожалуйста, повторите отправку еще раз</p>
-        <button type="button" class="button modal__button modal__button_error reservation__button">Забронировать</button>
-      </div>
-    </div>
-  </div>
 </body>
 </html>
