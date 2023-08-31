@@ -1,5 +1,4 @@
 const styles = new Map();
-console.log(styles);
 
 const addStyle = (url) => {
   const existingLink = document.querySelector(`link[href="${url}"]`);
