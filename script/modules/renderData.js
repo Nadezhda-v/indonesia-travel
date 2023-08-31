@@ -12,6 +12,10 @@ import {
 } from './modal.js';
 
 import {fetchRequest} from './request.js';
+import {
+  isValidValueForm,
+  controlInputValue,
+} from './formValidation.js';
 
 export const renderData = (data) => {
   const tourForm = document.querySelector('.tour__form');
@@ -37,8 +41,6 @@ export const renderData = (data) => {
 
   const reservationInfo = reservationForm.querySelector('.reservation__data');
   const reservationPrice = reservationForm.querySelector('.reservation__price');
-  const reservationPhone = reservationForm.querySelector('#reservation__phone');
-  const reservationName = reservationForm.querySelector('#reservation__name');
 
   reservationInfo.style.opacity = '0';
   reservationPrice.textContent = `0 ₽`;
@@ -135,15 +137,11 @@ export const renderData = (data) => {
     }
   });
 
-  const namePattern = /^([а-яА-ЯёЁ]{2,}\s){2,}[а-яА-ЯёЁ]{2,}$/;
-  const phonePattern = /^(\+7|8)\d{10}$/;
+  controlInputValue();
 
   reservationForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const inputName = reservationName.value;
-    const inputPhone = reservationPhone.value;
-    const isValidName = namePattern.test(inputName);
-    const isValidPhone = phonePattern.test(inputPhone);
+    const {isValidName, isValidPhone} = isValidValueForm();
 
     if (isValidName && isValidPhone) {
       reservationInputWrapName.style.boxShadow = 'none';
