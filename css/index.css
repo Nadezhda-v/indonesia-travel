@@ -1501,6 +1501,7 @@ p {
 
 .album__slider {
 		position: relative;
+    overflow: hidden;
 }
 
 .album__item {
@@ -1521,10 +1522,6 @@ p {
 		z-index: 3;
 		cursor: pointer;
 		border-radius: 50%;
-}
-
-.album__left:focus {
-		background-color: #AFAFAF;
 }
 
 .album__left:active {
@@ -1548,10 +1545,6 @@ p {
 		z-index: 3;
 		cursor: pointer;
 		border-radius: 50%;
-}
-
-.album__right:focus {
-		background-color: #AFAFAF;
 }
 
 .album__right:active {
@@ -1902,6 +1895,7 @@ p {
 		display: -webkit-box;
 		display: -ms-flexbox;
 		display: flex;
+    height: 90px;
 }
 
 .footer__button {
@@ -1935,6 +1929,10 @@ p {
 		margin-bottom: 10px;
 }
 
+.just-validate-error-label {
+  font-size: 16px;
+  padding-top: 3px;
+}
 
 @media (max-width: 1200px) {
 
@@ -2631,10 +2629,14 @@ p {
 
 		.album__left {
 				left: 34px;
+        width: 60px;
+				height: 60px;
 		}
 
 		.album__right {
 				right: 34px;
+        width: 60px;
+				height: 60px;
 		}
 
 		.reservation {
@@ -2653,7 +2655,7 @@ p {
 
 		.reservation__label {
 				font-size: 14px;
-				margin-bottom: 15px;
+				margin-bottom: 8px;
 		}
 
 		.reservation__select-wrapper {
@@ -2688,8 +2690,6 @@ p {
 		.footer__content {
 				-ms-grid-columns: 2fr 3fr 4fr;
 				grid-template-columns: 2fr 3fr 4fr;
-
-
 		}
 
 		.footer__menu {
@@ -2756,7 +2756,6 @@ p {
 				grid-template-columns: 2fr 4fr 3fr;
 		}
 
-
 		.album__left:hover {
 				-webkit-transform: translateY(-50%) rotate(180deg);
 				-ms-transform: translateY(-50%) rotate(180deg);
@@ -2777,6 +2776,10 @@ p {
 				-ms-transform: rotate(-30deg);
 				transform: rotate(-30deg);
 		}
+
+    .just-validate-error-label {
+      font-size: 14px;
+    }
 }
 
 
@@ -3267,9 +3270,10 @@ p {
 				margin-bottom: 20px;
 		}
 
-
+    .just-validate-error-label {
+      font-size: 12px;
+    }
 }
-
 
 @media (max-width: 580px) {
 		.hero {

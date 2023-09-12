@@ -1,46 +1,83 @@
+import {fetchRequest} from './request.js';
+
 const reservationName = document.querySelector('#reservation__name');
 const reservationPhone = document.querySelector('#reservation__phone');
 
-const namePattern = /^([а-яА-ЯёЁ]{2,}\s){2,}[а-яА-ЯёЁ]{2,}$/;
-const phonePattern = /^(\+?7|8)\d{10}$/;
+const footerForm = document.querySelector('.footer__form');
+const footerText = footerForm.querySelector('.footer__text');
+const footerTitle = footerForm.querySelector('.footer__form-title');
+const footerInputWrap = footerForm.querySelector('.footer__input-wrap');
+
+const addMask = () => {
+  const maskPhone = new Inputmask('+7 (999) 999-99-99');
+  maskPhone.mask(reservationPhone);
+};
 
 const controlInputValue = () => {
   reservationName.addEventListener('input', () => {
     reservationName.value = reservationName.value.replace(/[^а-яА-ЯёЁ\s]/g, '');
   });
 
-  reservationPhone.addEventListener('input', () => {
-    let inputPhone = reservationPhone.value.replace(/[^+\d]/g, '');
-
-    // Разрешить ввод только одного символа "+"
-    if (inputPhone.includes('+')) {
-      inputPhone = inputPhone.replace(/\+/g, '');
-      inputPhone = '+' + inputPhone;
-    }
-
-    if (inputPhone.includes('+')) {
-      // Если есть символ "+", ограничение длины строки до 12 символов
-      reservationPhone.value = inputPhone.length > 12 ?
-        inputPhone.slice(0, 12) : inputPhone;
-    } else {
-      // Если нет символа "+", ограничение длины строки до 11 символов
-      reservationPhone.value = inputPhone.length > 11 ?
-        inputPhone.slice(0, 11) : inputPhone;
-    }
-  });
+  addMask();
 };
 
-const isValidValueForm = () => {
-  const inputName = reservationName.value;
-  const inputPhone = reservationPhone.value;
+const validateFooterForm = () => {
+  const validateFooterForm = new JustValidate('.footer__form');
 
-  const isValidName = namePattern.test(inputName);
-  const isValidPhone = phonePattern.test(inputPhone);
+  validateFooterForm
+    .addField('.footer__input', [
+      {
+        rule: 'required',
+        errorMessage: 'Введите email',
+      },
+      {
+        rule: 'email',
+        errorMessage: 'Некорректный email',
+      },
+    ])
+    .onSuccess(({target}) => {
+      const mail = target.mail.value;
 
-  return {isValidName, isValidPhone};
+      fetchRequest('https://jsonplaceholder.typicode.com/posts', {
+        method: 'POST',
+        body: {
+          body: mail,
+        },
+        callback(err, data) {
+          const heightBlock = footerForm.clientHeight;
+          if (err) {
+            console.warn(err, data);
+            footerTitle.style.opacity = '0';
+            footerTitle.textContent = `
+            Не удалось отправить заявку.
+            Пожалуйста, повторите отправку еще раз
+          `;
+            footerText.textContent = '';
+          } else {
+            footerForm.style.opacity = '0';
+            footerTitle.textContent = 'Ваша заявка успешно отправлена';
+            footerText.textContent = `
+            Наши менеджеры свяжутся с вами в течении 3-х рабочих дней
+          `;
+            footerInputWrap.style.opacity = '0';
+            footerInputWrap.style.visibility = 'hidden';
+          }
+
+          footerForm.style.height = heightBlock + 'px';
+
+          setTimeout(() => {
+            footerForm.style.opacity = '1';
+            footerTitle.style.opacity = '1';
+          }, 300);
+        },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    });
 };
 
 export {
-  isValidValueForm,
   controlInputValue,
+  validateFooterForm,
 };
