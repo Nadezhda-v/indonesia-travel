@@ -13,7 +13,6 @@ import {
 
 import {fetchRequest} from './request.js';
 import {
-  isValidValueForm,
   controlInputValue,
 } from './formValidation.js';
 
@@ -32,12 +31,10 @@ export const renderData = (data) => {
 
   const reservationPeople =
     reservationForm.querySelector('#reservation__people');
+  const reservationPhone =
+    reservationForm.querySelector('#reservation__phone');
   const reservationOptionPeople =
     reservationPeople.querySelectorAll('.tour__option');
-  const reservationInputWrapName =
-    reservationForm.querySelector('.reservation__input-wrap_name');
-  const reservationInputWrapPhone =
-    reservationForm.querySelector('.reservation__input-wrap_phone');
 
   const reservationInfo = reservationForm.querySelector('.reservation__data');
   const reservationPrice = reservationForm.querySelector('.reservation__price');
@@ -139,50 +136,86 @@ export const renderData = (data) => {
 
   controlInputValue();
 
-  reservationForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const {isValidName, isValidPhone} = isValidValueForm();
-
-    if (isValidName && isValidPhone) {
-      reservationInputWrapName.style.boxShadow = 'none';
-      reservationInputWrapPhone.style.boxShadow = 'none';
-      const formData = new FormData(e.target);
-      const data = {};
-
-      for (const [name, value] of formData) {
-        data[name] = value;
-      }
-
-      const formattedData = formatData(data.date, data.people);
-      await showConfirmModal(formattedData);
-      const confirmButton = document.querySelector('.modal__button_confirm');
-
-      confirmButton.addEventListener('click', async () => {
-        await fetchRequest('https://jsonplaceholder.typicode.com/posts', {
-          method: 'POST',
-          body: data,
-          callback(err, data) {
-            if (err) {
-              console.warn(err, data);
-              showErrorModal();
-            } else {
-              showSuccessModal();
-              reservationForm.reset();
-              reservationInfo.style.opacity = '0';
-              reservationPrice.textContent = `0 ₽`;
-              disableFormElements(reservationForm);
-            }
+  const validateReservationForm = () => {
+    const validateReservationForm = new JustValidate('.reservation__form');
+    validateReservationForm
+      .addField('#reservation__date', [
+        {
+          rule: 'required',
+          errorMessage: 'Выберите дату',
+        },
+      ])
+      .addField('#reservation__people', [
+        {
+          rule: 'required',
+          errorMessage: 'Укажите количество человек',
+        },
+      ])
+      .addField('#reservation__name', [
+        {
+          rule: 'required',
+          errorMessage: 'Введите ФИО',
+        },
+        {
+          rule: 'customRegexp',
+          value: /^([а-яА-ЯёЁ]{2,}\s){2,}[а-яА-ЯёЁ]{2,}$/,
+          errorMessage: 'ФИО некорректное',
+        },
+      ])
+      .addField('#reservation__phone', [
+        {
+          rule: 'required',
+          errorMessage: 'Введите телефон',
+        },
+        {
+          validator() {
+            const phone = reservationPhone.inputmask.unmaskedvalue();
+            return !!(phone.length === 10);
           },
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          errorMessage: 'Телефон некорректный',
+        },
+      ])
+      .onSuccess(async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = {};
+
+        for (const [name, value] of formData) {
+          data[name] = value;
+          if (name === 'phone') {
+            const value = reservationPhone.inputmask.unmaskedvalue();
+            data[name] = value;
+          }
+        }
+
+        const formattedData = formatData(data.date, data.people);
+        await showConfirmModal(formattedData);
+        const confirmButton = document
+          .querySelector('.modal__button_confirm');
+
+        confirmButton.addEventListener('click', async () => {
+          await fetchRequest('https://jsonplaceholder.typicode.com/posts', {
+            method: 'POST',
+            body: data,
+            callback(err, data) {
+              if (err) {
+                console.warn(err, data);
+                showErrorModal();
+              } else {
+                showSuccessModal();
+                reservationForm.reset();
+                reservationInfo.style.opacity = '0';
+                reservationPrice.textContent = `0 ₽`;
+                disableFormElements(reservationForm);
+              }
+            },
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
         });
       });
-    } else if (!isValidName) {
-      reservationInputWrapName.style.boxShadow = '0 0 12px red';
-    } else {
-      reservationInputWrapName.style.boxShadow = 'none';
-      reservationInputWrapPhone.style.boxShadow = '0 0 12px red';
-    }
-  });
+  };
+
+  validateReservationForm();
 };

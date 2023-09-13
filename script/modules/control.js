@@ -1,13 +1,6 @@
-import {fetchRequest} from './request.js';
-
 const button = document.querySelector('.header__menu-button');
 const menu = document.querySelector('.header__menu');
 const list = document.querySelector('.header__list');
-
-const footerForm = document.querySelector('.footer__form');
-const footerText = document.querySelector('.footer__text');
-const footerTitle = document.querySelector('.footer__form-title');
-const footerInput = document.querySelector('.footer__input-wrap');
 
 // Закрытие меню
 const closeMenu = () => {
@@ -96,48 +89,6 @@ const handleEvent = () => {
       const overlay = modalButton.closest('.overlay');
       overlay.remove();
     }
-  });
-
-  footerForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const mail = footerForm.mail.value;
-
-    fetchRequest('https://jsonplaceholder.typicode.com/posts', {
-      method: 'POST',
-      body: {
-        body: mail,
-      },
-      callback(err, data) {
-        const heightBlock = footerForm.clientHeight;
-        if (err) {
-          console.warn(err, data);
-          footerTitle.style.opacity = '0';
-          footerTitle.textContent = `
-            Не удалось отправить заявку.
-            Пожалуйста, повторите отправку еще раз
-          `;
-          footerText.textContent = '';
-        } else {
-          footerForm.style.opacity = '0';
-          footerTitle.textContent = 'Ваша заявка успешно отправлена';
-          footerText.textContent = `
-            Наши менеджеры свяжутся с вами в течении 3-х рабочих дней
-          `;
-          footerInput.style.opacity = '0';
-          footerInput.style.visibility = 'hidden';
-        }
-
-        footerForm.style.height = heightBlock + 'px';
-
-        setTimeout(() => {
-          footerForm.style.opacity = '1';
-          footerTitle.style.opacity = '1';
-        }, 300);
-      },
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
   });
 };
 
